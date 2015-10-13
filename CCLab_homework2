@@ -1,0 +1,214 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CCLab Week One : Javascript</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+	<div id="myAwesomeToDoList">
+		<h1>Awesome JS To Do List</h1>
+				
+		<div id="taskAdder">
+			<form>
+				<input type="text" id="newTask" >
+				<input type="submit" id="addButton" value="ADD">
+			</form>
+		</div>
+		
+		
+		<div id="taskList">
+
+		</div>
+	
+	</div>
+
+
+	<script src="script.js"></script>
+	<script src="jquery-1.11.3.min.js"></script>
+</body>
+
+<style>
+#myAwesomeToDoList {
+	width: 510px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 5px;
+	height: auto;
+	background-color: #FF7485;
+}
+
+#myAwesomeToDoList h1 {
+	font-family: Arial Black, sans-serif;
+	text-transform: uppercase;
+	text-align: center;
+	color: white;
+}
+
+#newTask {
+	width: 445px;
+	height: 35px;
+	background-color: #4BF7FF;
+	border: solid 3px white;
+	color: navy;
+	font-size: 17px;
+}
+
+#newTask:focus {
+	outline: none;
+}
+
+#addButton {
+	height:43px;
+	width:50px;
+	margin-top: 0px;
+	padding-top: 3px;
+	float: right;
+	background-color:#CDFF74;
+	border:3px solid #CDFF74;
+	color:#6CC1FF;
+	font-family:Arial Black;
+	font-size:14px;
+}
+
+#taskList {
+	margin-top: 30px;
+}
+
+.task {
+	width: 503px;
+	margin-top: 10px;
+	padding: 1px;
+	background-color: white;
+}
+
+.task p {
+	width: 465px;
+	height: 20px;
+	background-color: white;
+	margin: 5px;
+	font-size: 16px;
+	padding-top: 3px;
+	padding-left: 5px;
+	font-family: 'Arial', sans-serif;
+	
+}
+
+#deleteButton {
+	height:23px;
+	width:20px;
+	float: right;
+	margin-top: -28px;
+	margin-right: 5px;
+	background-color: #CDFF74;
+	border:1px solid #CDFF74;
+	color:#b8e356;
+	font-family:Arial Black;
+	font-size:15px;
+	padding: 0px;
+	cursor: pointer;
+}
+</style>
+<script>
+//place to save tasks
+var taskArray = [];
+
+//update task list
+var updateTasks = function(){
+	
+//defines the last task list div
+var taskListHolding = document.getElementById('taskList');
+
+//empty the task list
+	taskListHolding.innerHTML='';
+	//determine task list length
+	var len = taskArray.length;
+	var i;
+
+	for(i=0; i<len; i++){
+	console.log('task ' + i + ": " + taskArray[i]);
+	//create element
+	var newTask = document.createElement( 'div');
+
+	//define the div's ID and it's class
+	newTask.id = i;
+	newTask.className='task';
+
+	//create the task paragraph
+	var task = document.createElement('P');
+
+	//assign the task to the task div
+	task.innerHTML = taskArray[i];
+
+	//create the delete button
+	var deleteButton = document.createElement('button');
+	//set the delete button ID to deletbutton
+	deleteButton.id = 'deleteButton';
+	//add a value to our button
+	deleteButton.innerText='x';
+
+	//listen for the click
+	deleteButton.addEventListener('click', function(e){
+	e.preventDefault();
+	deleteTask(e);
+	});
+
+	//append the task to the taskdiv
+	newTask.appendChild(task);
+
+	//append the delete button to the newTask div
+	newTask.appendChild(deleteButton);
+
+	//append the taskDiv to the tasklistenholding Div
+	taskListHolding.appendChild(newTask);
+
+	};
+
+};
+
+//save task
+var saveTask = function(){
+	//defines input for and assions the value
+var taskInput = document.getElementById('newTask');
+	var newTask = taskInput.value;
+
+// add new value to your array
+taskArray.push(newTask);
+
+//updateTasks
+updateTasks();
+	
+	taskInput.value="";
+	console.log(taskArray);
+
+};
+
+
+//delete task
+var deleteTask = function(e){
+	var taskNumber = e.target.parentElement.id;
+	taskArray.splice(taskNumber, 1);
+	updateTasks();
+};
+
+
+//init
+var init = function(){
+	//define the add button
+	var addButton = document.getElementById('addButton');
+
+	//add event listner for click
+	addButton.addEventListener('click',function(e){
+		e.preventDefault();
+		saveTask();
+	});
+
+};
+
+window.onload = init();
+</script>
+
+</html>
+
